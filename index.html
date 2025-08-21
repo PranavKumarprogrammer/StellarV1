@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellarV1 Official Website</title>
+    <!-- Favicon and font links -->
+    <link rel="icon" href="https://placehold.co/32x32/000000/FFFFFF?text=SV1" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base styles and custom utilities from Tailwind, plus custom animations */
+        :root {
+            --purple-400: #a78bfa;
+            --pink-500: #ec4899;
+            --red-500: #ef4444;
+            --blue-400: #60a5fa;
+            --purple-500: #8b5cf6;
+            --neutral-950: #0a0a0a;
+            --white-70: rgba(255, 255, 255, 0.7);
+            --white-80: rgba(255, 255, 255, 0.8);
+            --white-90: rgba(255, 255, 255, 0.9);
+            --neutral-800: #262626;
+            --neutral-700: #404040;
+            --neutral-500: #737373;
+            --neutral-400: #a3a3a3;
+            --green-400: #4ade80;
+            --pink-400: #f472b6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--neutral-950);
+            color: white;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Recreating the blob animation */
+        @keyframes blob {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite ease-in-out;
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        .animation-delay-6000 { animation-delay: 6s; }
+
+        /* General element transitions */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        /* Specific animation classes to be toggled by JS */
+        .fade-in-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .fade-in-slide-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-slide-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typing effect for the console text */
+        .blink-cursor::after {
+          content: '_';
+          animation: blink-cursor 1s step-end infinite;
+        }
+        @keyframes blink-cursor {
+          from, to { color: transparent }
+          50% { color: var(--green-400); }
+        }
+
+        /* Hover and active states for cards and buttons */
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .section-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Background gradient text effect */
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-neutral-950 text-white font-inter">
+
+    <!-- Navigation Bar with Theme Toggle and Menu -->
+    <nav class="w-full flex items-center justify-between px-6 py-4 bg-neutral-900/80 backdrop-blur-lg shadow-lg fixed top-0 left-0 z-50">
+        <div class="flex items-center space-x-4">
+            <span class="text-2xl font-bold gradient-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">StellarV1</span>
+            <ul class="hidden md:flex space-x-6 text-white/80 font-medium">
+                <li><a href="#hero-section" class="hover:text-pink-400 transition">Home</a></li>
+                <li><a href="#features" class="hover:text-purple-400 transition">Features</a></li>
+                <li><a href="#early-access" class="hover:text-blue-400 transition">Early Access</a></li>
+                <li><a href="#why-stellar-v1" class="hover:text-green-400 transition">Why StellarV1</a></li>
+            </ul>
+        </div>
+        <div class="flex items-center space-x-4">
+            <!-- Go to Main.html Button -->
+            <a href="main.html" id="mainPageBtn" class="px-5 py-2 rounded-full font-semibold bg-gradient-to-r from-green-400 to-blue-500 text-white shadow-lg hover:from-blue-500 hover:to-green-400 transition-all duration-300 focus:outline-none">
+                Go to StellarV1 Main
+            </a>
+        </div>
+    </nav>
+
+    <!-- Spacer for fixed nav -->
+    <div class="h-20"></div>
+
+    <!-- Global animated background -->
+    <div class="absolute inset-0 z-0 opacity-20">
+        <div class="absolute top-0 left-0 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <div class="absolute top-0 right-0 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-0 left-1/4 w-80 h-80 bg-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div class="absolute bottom-10 right-10 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-6000"></div>
+    </div>
+    
+    <!-- Hero Section -->
+    <header id="hero-section" class="relative z-10 min-h-screen flex flex-col justify-center items-center text-center p-4">
+        <div class="space-y-6 fade-in-scale">
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter gradient-text bg-gradient-to-br from-white to-neutral-400 animate-hero-h1">
+                StellarV1
+            </h1>
+            <h2 class="text-2xl md:text-4xl text-white/80 font-semibold animate-hero-h2">
+                The Ultimate AI. A new level of intelligence.
+            </h2>
+            <div id="dates-container" class="font-mono text-xl md:text-2xl text-pink-400 opacity-0">
+                <p id="dates-text" class="whitespace-pre-line leading-relaxed"></p>
+            </div>
+            <div id="creator-container" class="mt-6 text-sm md:text-base text-white/60 font-light opacity-0">
+                A creation by Pranav.
+            </div>
+        </div>
+    </header>
+
+    <!-- Why StellarV1 Section -->
+    <section id="why-stellar-v1" class="w-full py-16 px-4 md:px-16 lg:py-24 max-w-7xl mx-auto relative z-10">
+        <h3 class="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-8 lg:mb-12 fade-in-scale">
+            The New Standard in AI
+        </h3>
+        <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center fade-in-slide-up">
+            <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                StellarV1 is not just another language model. Built on a revolutionary new architecture, it redefines what's possible, offering unprecedented speed, accuracy, and versatility. While others are catching up to GPT-5, StellarV1 has already surpassed it, trained on a multi-modal dataset that includes real-time data from the entire cosmos of human knowledge. It is the first truly all-rounder AI, capable of seamlessly switching between creative, analytical, and logical tasks.
+            </p>
+            <div class="flex justify-center fade-in-scale">
+                <div class="relative w-full h-64 md:h-96 rounded-3xl overflow-hidden bg-neutral-800 border border-purple-500/20 shadow-2xl shadow-purple-500/10 transition-all duration-300 section-card">
+                    <div class="absolute inset-0 p-4 font-mono text-xs md:text-sm overflow-hidden text-green-400/80">
+                        <span id="blink-cursor"></span>
+                        <pre class="whitespace-pre-wrap">
+                            [INFO] Booting StellarV1 Core...
+[TASK] Initializing Quantum Neural Fabric...
+[DATA] Ingesting real-time global knowledge streams...
+[STATUS] All systems online. Awaiting command.
+> stellarV1.query("solve_for_x_in_E=mc^2_given_m_and_c");
+[RESULT] Processing request with 99.9% confidence.
+> stellarV1.task("generate_novel_chapter_in_style_of_hemingway");
+[RESULT] Commencing creative synthesis...
+> stellarV1.speak("what is the meaning of life");
+[RESULT] ...
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Key Features Section -->
+    <section id="features" class="w-full py-16 px-4 md:px-16 lg:py-24 max-w-7xl mx-auto relative z-10">
+        <h3 class="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-8 lg:mb-12 fade-in-scale">
+            Unmatched Capabilities
+        </h3>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature Card 1 -->
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col items-center text-center transition-all duration-300 card fade-in-slide-up">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-pink-400 mb-4 lucide lucide-sparkles"><path d="M9.91 4.25c.32-.54.9-.84 1.5-.75L15.34 4c.64.09 1.15.58 1.4 1.2l.17.48c.24.6.9.9 1.5.76l4.03-.79c.6-.12 1.2.14 1.5.63l.36.62c.3.5.07 1.1-.5 1.4l-3.32 1.8c-.5.27-.8.84-.7 1.44l.27 4c.1.6.45 1.1.9 1.5l.4.3c.46.34.6.95.4 1.5l-1.14 3.25c-.2.58-.7.96-1.3.96h-3.3c-.6 0-1.1.3-1.4.8l-.5 1.4c-.3.8-.96 1.2-1.7 1h-2c-.73 0-1.4-.4-1.7-1l-.5-1.4c-.3-.5-.8-.8-1.4-.8h-3.3c-.6 0-1.1-.38-1.3-.96L.1 19.14c-.2-.56-.05-1.17.4-1.5l.4-.3c.45-.4.8-.9.9-1.5l.27-4c.1-.6-.2-1.17-.7-1.44l-3.32-1.8c-.57-.3-.8-.9-.5-1.4l.36-.62c.3-.5.9-.77 1.5-.63l4.03.79c.6.14 1.2-.16 1.4-.76l.17-.48c.25-.62.76-1.11 1.4-1.2l4.03-.66c.6-.1.97-.6 1.3-.9l1.4-2.4c.3-.5.9-.76 1.5-.76h2c.73 0 1.4.4 1.7 1z"></path></svg>
+                <h4 class="text-2xl md:text-3xl font-semibold text-white/90 mb-6">Universal Creativity</h4>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    From writing poetry to designing a full-stack application, StellarV1's creativity is limitless. It understands context, tone, and intent like no other model.
+                </p>
+            </div>
+            <!-- Feature Card 2 -->
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col items-center text-center transition-all duration-300 card fade-in-slide-up" style="transition-delay: 0.1s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-pink-400 mb-4 lucide lucide-brain"><path d="M12 21a2 2 0 0 1-2-2.3L11.5 13H5a2 2 0 0 1-2-2v-.5A7.5 7.5 0 0 1 12 4a7.5 7.5 0 0 1 9 6.5V11a2 2 0 0 1-2 2h-6.5l1.5 5.7a2 2 0 0 1-2 2.3z"></path></svg>
+                <h4 class="text-2xl md:text-3xl font-semibold text-white/90 mb-6">Hyper-Logical Reasoning</h4>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Solve complex scientific problems, debug intricate code, or analyze financial markets with an AI that thinks like a super-genius.
+                </p>
+            </div>
+            <!-- Feature Card 3 -->
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col items-center text-center transition-all duration-300 card fade-in-slide-up" style="transition-delay: 0.2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-pink-400 mb-4 lucide lucide-code"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <h4 class="text-2xl md:text-3xl font-semibold text-white/90 mb-6">Seamless Multi-Modality</h4>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Translate a conversation, describe an image, and write a Python script in a single, fluid interaction. No more silos, just pure intelligence.
+                </p>
+            </div>
+            <!-- Feature Card 4 -->
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col items-center text-center transition-all duration-300 card fade-in-slide-up" style="transition-delay: 0.3s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-pink-400 mb-4 lucide lucide-globe"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
+                <h4 class="text-2xl md:text-3xl font-semibold text-white/90 mb-6">Real-Time Knowledge</h4>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Trained on the latest data and continuously learning, StellarV1's knowledge base is never outdated, giving you the most accurate and relevant information.
+                </p>
+            </div>
+            <!-- Feature Card 5 -->
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col items-center text-center transition-all duration-300 card fade-in-slide-up" style="transition-delay: 0.4s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-pink-400 mb-4 lucide lucide-feather"><path d="M12.67 20.3c.53-.53 1.5-1.5 2.5-2.5h-4.34m-3.46 3.46l-4.24-4.24m6.38-6.38l-4.24-4.24m6.38-6.38l-4.24-4.24m8.48 4.24l-4.24-4.24m4.24 4.24c-1.12-1.12-2.12-2.12-3.37-3.37m-1.25-1.25l-4.24-4.24m4.24 4.24c-1.12-1.12-2.12-2.12-3.37-3.37m4.24 4.24l-4.24-4.24m-1.25-1.25l-4.24-4.24m6.38 6.38l-4.24-4.24m6.38 6.38l-4.24-4.24m6.38 6.38l-4.24-4.24M12.67 20.3c.53-.53 1.5-1.5 2.5-2.5h-4.34m-3.46 3.46l-4.24-4.24m6.38-6.38l-4.24-4.24m6.38-6.38l-4.24-4.24m8.48 4.24l-4.24-4.24m4.24 4.24c-1.12-1.12-2.12-2.12-3.37-3.37m-1.25-1.25l-4.24-4.24m4.24 4.24c-1.12-1.12-2.12-2.12-3.37-3.37m4.24 4.24l-4.24-4.24m-1.25-1.25l-4.24-4.24m6.38 6.38l-4.24-4.24m6.38 6.38l-4.24-4.24m6.38 6.38l-4.24-4.24"></path></svg>
+                <h4 class="text-2xl md:text-3xl font-semibold text-white/90 mb-6">Human-Level Nuance</h4>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Its ability to understand emotional subtext and contextual nuance makes it an unparalleled tool for communication, therapy, and creative writing.
+                </p>
+            </div>
+            <!-- Feature Card 6 -->
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-6 lg:p-8 flex flex-col items-center text-center transition-all duration-300 card fade-in-slide-up" style="transition-delay: 0.5s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-pink-400 mb-4 lucide lucide-layout-dashboard"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><line x1="3" x2="21" y1="9" y2="9"></line><line x1="9" x2="9" y1="21" y2="9"></line></svg>
+                <h4 class="text-2xl md:text-3xl font-semibold text-white/90 mb-6">Customizable Workflows</h4>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Tailor StellarV1 to your specific needs. Create custom personas, integrate with your tools, and automate entire workflows with a few commands.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Early Access and Creator Section -->
+    <section id="early-access" class="w-full py-16 px-4 md:px-16 lg:py-24 max-w-7xl mx-auto relative z-10">
+        <div class="grid md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <!-- Creator Profile -->
+            <div class="bg-neutral-800 rounded-3xl p-8 border border-neutral-700 shadow-2xl shadow-neutral-700/20 transition-all duration-300 section-card fade-in-scale">
+                <h4 class="text-3xl font-bold text-white mb-4">Meet the Creator</h4>
+                <div class="flex items-center space-x-6 mb-6">
+                    <div class="w-24 h-24 rounded-full bg-neutral-700 flex items-center justify-center overflow-hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-neutral-500 lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="text-xl font-semibold text-white">Pranav</p>
+                    </div>
+                </div>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Pranav is a visionary in the field of artificial intelligence, with a singular mission to build AGI that serves humanity. With a background in theoretical physics and computational neuroscience, Pranav's unique approach to AI has led to the development of the groundbreaking core architecture behind StellarV1.
+                </p>
+            </div>
+
+            <!-- Early Access Form -->
+            <div class="bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 text-center shadow-2xl shadow-purple-500/10 transition-all duration-300 section-card fade-in-scale">
+                <div class="flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-blue-400 lucide lucide-rocket"><path d="M4.5 16.5c-1.2-1.2-3.3-1.6-4.5-1.2s-.8 3.3.4 4.5l1.8 1.8c1.2 1.2 3.3.8 4.5-.4s.8-3.3-.4-4.5z"></path><path d="M9.5 7.5a2.5 2.5 0 0 1 2.5 2.5v.5"></path><path d="M11 11v-1a2.5 2.5 0 0 1 5 0v1"></path><path d="M11 11v-1a2.5 2.5 0 0 1 5 0v1"></path><path d="M14 14l6-6"></path><path d="M14 14l-6-6"></path><path d="M14 14l-6-6"></path><path d="M14 14l-6-6"></path><path d="M14 14l-6-6"></path></svg>
+                    <h4 class="text-3xl font-bold gradient-text bg-gradient-to-r from-blue-400 to-purple-400 ml-4">Join Early Access</h4>
+                </div>
+                <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+                    Be among the first to experience the future. Early access begins on <span class="font-bold text-white">October 1, 2025</span>. Sign up to secure your spot.
+                </p>
+                <form class="mt-8 space-y-4">
+                    <input
+                        type="email"
+                        placeholder="Enter your email address"
+                        class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                    />
+                    <button
+                        type="submit"
+                        class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300"
+                    >
+                        Request Access
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 w-full text-center py-8 text-white/50 text-sm opacity-0 fade-in-scale">
+        <p>
+            &copy; <span id="current-year"></span> StellarV1. All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Recreating the hero section animations with pure JS
+            const datesTextElement = document.getElementById('dates-text');
+            const datesContainer = document.getElementById('dates-container');
+            const creatorContainer = document.getElementById('creator-container');
+            const datesToType = "Early Access: Oct 01, 2025\nOfficial Launch: Oct 15, 2025";
+            let i = 0;
+
+            const typeDates = () => {
+                if (i < datesToType.length) {
+                    datesTextElement.textContent += datesToType.charAt(i);
+                    i++;
+                    setTimeout(typeDates, 50);
+                } else {
+                    setTimeout(() => {
+                        creatorContainer.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                        creatorContainer.style.opacity = '1';
+                        creatorContainer.style.transform = 'translateY(0)';
+                    }, 1000);
+                }
+            };
+
+            setTimeout(() => {
+                datesContainer.style.transition = 'opacity 1s ease-out, transform 1s ease-out';
+                datesContainer.style.opacity = '1';
+                datesContainer.style.transform = 'translateY(0)';
+                typeDates();
+            }, 2000);
+            
+            // IntersectionObserver for the fade-in and slide-up animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-scale, .fade-in-slide-up').forEach(element => {
+                observer.observe(element);
+            });
+
+            // Set current year in the footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
