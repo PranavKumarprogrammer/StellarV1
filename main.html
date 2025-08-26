@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellarV1</title>
+    <link rel="icon" type="orbit/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="orbit/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" href="orbit.png" type="image/png">
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database-compat.js"></script>
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- Remove or comment out this audio element -->
+<!--
+<audio autoplay loop>
+  <source src="space-ambient-351305.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+-->
+
+<body data-theme="dark">
+    <div id="particles-js" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></div>
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+    </div>
+    <!-- Sidebar bar icon -->
+    <div id="sidebarBar" class="sidebar-bar">
+        <i class="fas fa-bars"></i>
+    </div>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span>Menu</span>
+            <button id="closeSidebar" class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-tabs">
+            <button class="sidebar-tab active" data-tab="history"><i class="fas fa-clock"></i> History</button>
+            <button class="sidebar-tab" data-tab="newchat"><i class="fas fa-plus"></i> New Chat</button>
+            <button class="sidebar-tab" data-tab="settings"><i class="fas fa-cog"></i> Settings</button>
+        </div>
+        <div class="sidebar-content">
+            <div class="tab-content" id="historyTab"></div>
+            <div class="tab-content" id="newchatTab" style="display:none;">
+                <button id="sidebarNewChatBtn" class="sidebar-action-btn"><i class="fas fa-broom"></i> Start New Chat</button>
+            </div>
+            <div class="tab-content" id="settingsTab" style="display:none;">
+                <div style="margin-bottom:1.5rem;">
+                    <label for="replyFontSize" style="font-weight:500;">Reply Font Size:</label>
+                    <input type="range" id="replyFontSize" min="12" max="28" value="16" style="margin-left:10px;">
+                    <span id="replyFontSizeValue" style="margin-left:8px;">16px</span>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Theme:</label>
+                    <select id="themeSelect" style="margin-left:10px;">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="cosmic">Cosmic</option>
+                        <option value="solarized">Solarized</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Ambient Music:</label>
+                    <button id="musicToggleBtn" class="sidebar-action-btn">
+                        <i class="fas fa-volume-mute"></i> <span id="musicToggleText">Music Off</span>
+                    </button>
+                </div>
+               
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Show Timestamps:</label>
+                    <input type="checkbox" id="timestampToggle" style="margin-left:10px;" checked>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Export Chat History:</label>
+                    <button id="exportHistoryBtn" class="sidebar-action-btn"><i class="fas fa-download"></i> Export JSON</button>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Copy Last Reply:</label>
+                    <button id="copyLastReplyBtn" class="sidebar-action-btn"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Clear All History:</label>
+                    <button id="clearHistoryBtn" class="sidebar-action-btn" style="background:#ff4d4d;color:#fff;"><i class="fas fa-trash"></i> Clear</button>
+                </div>
+                <div>
+                    <button id="resetSettingsBtn" class="sidebar-action-btn" style="background:#444;color:#fff;"><i class="fas fa-undo"></i> Reset All Settings</button>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label for="typingSpeed" style="font-weight:500;">Reply Typing Speed:</label>
+                    <input type="range" id="typingSpeed" min="10" max="120" value="40" style="margin-left:10px;">
+                    <span id="typingSpeedValue" style="margin-left:8px;">40ms</span>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Reply Language:</label>
+                    <!-- 22 Indian Languages Dropdown -->
+<select id="replyLanguage" style="margin-left:10px;">
+    <option value="en">English</option>
+    <option value="hi">Hindi (हिन्दी)</option>
+    <option value="bn">Bengali (বাংলা)</option>
+    <option value="te">Telugu (తెలుగు)</option>
+    <option value="mr">Marathi (मराठी)</option>
+    <option value="ta">Tamil (தமிழ்)</option>
+    <option value="ur">Urdu (اردو)</option>
+    <option value="gu">Gujarati (ગુજરાતી)</option>
+    <option value="kn">Kannada (ಕನ್ನಡ)</option>
+    <option value="ml">Malayalam (മലയാളം)</option>
+    <option value="or">Odia (ଓଡ଼ିଆ)</option>
+    <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
+    <option value="as">Assamese (অসমীয়া)</option>
+    <option value="ma">Maithili (मैथिली)</option>
+    <option value="sa">Santali (ᱥᱟᱱᱛᱟᱲᱤ)</option>
+    <option value="ks">Kashmiri (کٲشُر)</option>
+    <option value="ne">Nepali (नेपाली)</option>
+    <option value="sd">Sindhi (سنڌي)</option>
+    <option value="kok">Konkani (कोंकणी)</option>
+    <option value="doi">Dogri (डोगरी)</option>
+    <option value="mni">Manipuri (মৈতৈলোন)</option>
+    <option value="bho">Bhojpuri (भोजपुरी)</option>
+</select>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    
+                    </select>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Show Word Count:</label>
+                    <input type="checkbox" id="wordCountToggle" style="margin-left:10px;">
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <label style="font-weight:500;">Reply Subject:</label>
+                    <select id="replySubject" style="margin-left:10px;">
+    <option value="general">General</option>
+    <option value="education">Education</option>
+    <option value="technology">Technology</option>
+    <option value="health">Health</option>
+    <option value="finance">Finance</option>
+    <option value="science">Science</option>
+    <option value="history">History</option>
+    <option value="travel">Travel</option>
+    <option value="food">Food</option>
+    <option value="entertainment">Entertainment</option>
+</select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="mainContainer">
+        <div class="logo-group cosmic-pulse">
+            <h1 class="logo">Stellar<span style="font-weight: 700">V1</span></h1>
+            <div class="version">Experimental version</div>
+            <div class="creator">Owner: Pranav • Second evolution of Cosmic</div>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Ask the cosmos..." aria-label="Search input">
+            <button id="newChatBtn" style="position:absolute;top:8px;right:8px;padding:6px 16px;border-radius:16px;border:none;background:var(--accent-highlight);color:var(--text);font-size:0.9rem;cursor:pointer;">New Chat</button>
+        </div>
+    </div>
+    <div class="response-container" id="responseContainer">
+        <div class="response-content" id="responseContent"></div>
+    </div>
+    <div class="status">System operational • StellarV1 Experimental</div>
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <div id="modalQuestion" class="modal-question"></div>
+            <div id="modalReply" class="modal-reply"></div>
+        </div>
+    </div>
+    <!-- Keep this audio element at the bottom of the body -->
+    <audio id="ambientMusic" loop>
+        <source src="space-ambient-351305.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <!-- Particles.js -->
+    <script src="script.js"></script>
+    <script>
+      document.getElementById("logoutBtn").onclick = function() {
+        firebase.auth().signOut().then(() => {
+          window.location.href = "login.html";
+        });
+      };
+    </script>
+    <script>
+  const firebaseConfig = { /* your config */ };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) {
+      window.location.href = "login.html";
+    }
+  });
+</script>
+</body>
+</html>
